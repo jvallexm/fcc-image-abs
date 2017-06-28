@@ -8,6 +8,8 @@
 var fs = require('fs');
 var express = require('express');
 var app = express();
+var mongodb = require('mongodb');
+var MongoClient = mongodb.MongoClient;
 
 if (!process.env.DISABLE_XORIGIN) {
   app.use(function(req, res, next) {
