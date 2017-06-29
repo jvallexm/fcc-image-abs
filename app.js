@@ -58,9 +58,18 @@ app.route('/recent')
          .toArray(function(err,docs){
            console.log("Array Length: " + docs.length);
            if(err) throw err;
-           var te
+           var tenMostRecent = [];
+           if(docs.length<11)
              res.json(docs);
-            db.close();
+           else
+           {
+             for(var x=1;x<11;x++)
+             {
+               tenMostRecent.push(docs[docs.length-x]);
+             }
+             res.json(tenMostRecent);
+           }
+           db.close();
           });  
      }     
    });
