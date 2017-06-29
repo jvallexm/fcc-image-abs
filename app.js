@@ -13,10 +13,12 @@ app.route('/')
 		  res.sendFile(process.cwd() + '/views/index.html');
     });
 
-app.route('/search/:searchTerms')
+app.route('/search/:searchTerms*')
    .get(function(req, res) 
     {
        var theSearch = req.params.searchTerms;
+       var page = req.query.offset;
+       console.log(page);
        MongoClient.connect(url,function(err,db){
          if(err)
          {
@@ -41,10 +43,20 @@ app.route('/search/:searchTerms')
            });
          }
        });
+      var whichPage=0;
+      if(page)
+      {
+        whichPage=(page*10);
+      }
+      else
+      {
+        whichPage=3;
+      }
+      console.log("Skipping: " + whichPage);
       var resultsArr = [];
       Bing.images(theSearch, {
           top: 10,   
-          skip: 3    
+          skip: whichPage    
         }, 
         function(err, result, body)
         {
@@ -54,13 +66,14 @@ app.route('/search/:searchTerms')
           for(var i=0;i<body.value.length;i++)
           {
             resultsArr.push(
-              {name: body.value[i].name,
+              {
+                name: body.value[i].name,
                webSearchUrl: body.value[i].webSearchUrl,
                hostPage: body.value[i].hostPageDisplayUrl
               }
             );
-            res.send(resultsArr);
-          }           
+          }   
+          res.send(resultsArr);
         });        
 	     
     });
