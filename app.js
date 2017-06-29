@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
+var url = process.env.MONGO_URL;
 
 app.route('/')
     .get(function(req, res) {
@@ -12,14 +13,23 @@ app.route('/')
 app.route('/search/:searchTerms')
    .get(function(req, res) 
     {
-       var searchTerms = searchTerms;
-	     res.send(searchTerms);
+       var theSearch = req.params.searchTerms;
+       MongoClient.connect(url,function(err,db){
+         if(err)
+         {
+           console.log("error connecting to database: "+err)
+         }
+         else
+         {
+           var date = new Date();
+           var searches = 
+           
+         }
+         
+       });
+	     res.send(theSearch);
     });
 
-app.use(function(req,res,next){
-    console.log(req);
-    res.send(req.originalUrl);
-});
 
 app.listen(process.env.PORT, function () {
   console.log('Node.js listening ...');
