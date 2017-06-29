@@ -22,7 +22,16 @@ app.route('/search/:searchTerms')
          else
          {
            var date = new Date();
-           var searches = 
+           var searches = db.collection('searches');
+           var addOne = function(db,callback)
+                        {
+                          searches.insert({
+                            
+                                   },
+                                   function(err,db){
+                                      if(err) throw err;
+                                   });
+                        }
            
          }
          
