@@ -4,7 +4,7 @@ var app = express();
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
 var url = process.env.MONGO_URL;
-var Bing = require('node-bing-api')({ accKey: process.env.BING_KEY1});
+var Bing = require('node-bing-api')({accKey: process.env.BING_KEY1});
 
 app.use('/public', express.static(process.cwd() + '/public'));
 
@@ -41,11 +41,16 @@ app.route('/search/:searchTerms')
            });
          }
        });
-      Bing.images("Ninja Turtles", {
-        top: 15,   // Number of results (max 50) 
-        skip: 3    // Skip first 3 result 
-      }, function(error, res, body){
-        console.log(body);  });        
+      Bing.images(theSearch, {
+        top: 10,   
+        skip: 3    
+      }, 
+      function(err, res, body)
+      {
+        if(err) console.log("Error: " + err);
+        console.log("Activating")
+        //console.log(res);  
+      });        
 	     res.send(theSearch);
     });
 
