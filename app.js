@@ -5,6 +5,8 @@ var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
 var url = process.env.MONGO_URL;
 
+app.use('/public', express.static(process.cwd() + '/public'));
+
 app.route('/')
     .get(function(req, res) {
 		  res.sendFile(process.cwd() + '/views/index.html');
@@ -26,19 +28,26 @@ app.route('/search/:searchTerms')
            var addOne = function(db,callback)
                         {
                           searches.insert({
-                            
+                                      terms: theSearch,
+                                      date: date
                                    },
                                    function(err,db){
                                       if(err) throw err;
                                    });
                         }
-           
+           addOne(db,function(){
+             db.close();
+           });
          }
          
        });
 	     res.send(theSearch);
     });
 
+app.route('/recent')
+   .get(function(req,res){
+   var
+});
 
 app.listen(process.env.PORT, function () {
   console.log('Node.js listening ...');
