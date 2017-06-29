@@ -41,17 +41,28 @@ app.route('/search/:searchTerms')
            });
          }
        });
+      var resultsArr = [];
       Bing.images(theSearch, {
-        top: 10,   
-        skip: 3    
-      }, 
-      function(err, res, body)
-      {
-        if(err) console.log("Error: " + err);
-        console.log("Activating")
-        //console.log(res);  
-      });        
-	     res.send(theSearch);
+          top: 10,   
+          skip: 3    
+        }, 
+        function(err, result, body)
+        {
+          if(err) console.log("Error: " + err);
+          console.log("Activating")
+          
+          for(var i=0;i<body.value.length;i++)
+          {
+            resultsArr.push(
+              {name: body.value[i].name,
+               webSearchUrl: body.value[i].webSearchUrl,
+               hostPage: body.value[i].hostPageDisplayUrl
+              }
+            );
+            res.send(resultsArr);
+          }           
+        });        
+	     
     });
 
 app.route('/recent')
