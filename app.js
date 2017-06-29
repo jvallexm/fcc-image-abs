@@ -4,6 +4,7 @@ var app = express();
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
 var url = process.env.MONGO_URL;
+var Bing = require('node-bing-api')({accKey: process.env.BING_KEY});
 
 app.use('/public', express.static(process.cwd() + '/public'));
 
@@ -39,8 +40,11 @@ app.route('/search/:searchTerms')
              db.close();
            });
          }
-         
        });
+       Bing.images(theSearch, {top:10, skip:3},
+         function(err,res,body){
+            console.log(body);
+         });
 	     res.send(theSearch);
     });
 
