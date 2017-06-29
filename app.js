@@ -46,7 +46,25 @@ app.route('/search/:searchTerms')
 
 app.route('/recent')
    .get(function(req,res){
-   var
+   MongoClient.connect(url,function(err,db){
+     if(err)
+     {
+       console.log("error connecting to database: "+err)
+     }
+     else
+     {
+        var searches = db.collection('searches');
+        searches.find({},{_id:0})
+         .toArray(function(err,docs){
+           console.log("Array Length: " + docs.length);
+           if(err) throw err;
+           var te
+             res.json(docs);
+            db.close();
+          });  
+     }     
+   });
+  
 });
 
 app.listen(process.env.PORT, function () {
